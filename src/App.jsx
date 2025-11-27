@@ -1,10 +1,16 @@
 import './App.css'
-import HomePage from '../pages/HomePage'
+import HomePage from './pages/HomePage'
+import NavBar from './components/ui/NavBar'
 
 function App() {
 
   return (
-    <HomePage />
+    <div>
+      <NavBar />
+      <div className='main-padding'>
+        <HomePage />
+      </div>
+    </div>
   )
 }
 
