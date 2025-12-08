@@ -25,6 +25,16 @@ body {
   /* Set the fill color of the text (optional, transparent by default) */
 }
 
+no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
 
 @media screen and (min-width: 480px) {
   .main-padding {

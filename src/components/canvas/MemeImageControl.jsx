@@ -1,4 +1,5 @@
 import { FiUpload } from "react-icons/fi";
+import MemeTemplates from "./MemeTemplates";
 
 const MemeImageControl = ({setImageSrc}) => {
 
@@ -7,8 +8,10 @@ const MemeImageControl = ({setImageSrc}) => {
         setImageSrc(URL.createObjectURL(event.target.files[0]));
     }
 
+    
+
     return (
-        <div className='flex flex-col p-2 items-center justify-between py-5'>
+        <div className='flex flex-col p-2 h-full w-[20vw] items-center gap-5 py-5'>
             <label htmlFor="imageSelector" className="cursor-pointer">
                 <div className='flex flex-col justify-center items-center h-fit w-fit p-5 bg-gray-200 text-gray-500 rounded-xl border-dashed border-2 border-gray-400'>
                     <FiUpload className="mx-auto text-3xl" />
@@ -17,9 +20,7 @@ const MemeImageControl = ({setImageSrc}) => {
                 </div>
                 <input type="file" id='imageSelector' accept='image/*' className='hidden' onChange={(e) => { handleImageChange(e) }} />
             </label>
-            <div className="h-7/10 w-full bg-gray-100 rounded-md border border-gray-300">
-                
-            </div>
+            <MemeTemplates setImageSrc={setImageSrc}/>
         </div>
     )
 }

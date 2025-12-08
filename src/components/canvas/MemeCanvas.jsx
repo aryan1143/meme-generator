@@ -32,7 +32,7 @@ function MemeCanvas({ top, left, fontSize, imageSrc, text, textClassName, outlin
   return (
     <div ref={canvasRef} style={{
       backgroundImage: imageSrc ? `url(${imageSrc})` : 'none',
-    }} className={`relative h-[80vh] w-[80vh] bg-cover bg-center bg-no-repeat bg-gray-200 overflow-hidden rounded-2xl border-2 border-dashed border-gray-400`}>
+    }} className={`relative h-[80vh] w-[80vh] bg-contain   bg-center bg-no-repeat bg-gray-200 overflow-hidden rounded-2xl border-2 border-dashed border-gray-400`}>
       <TextDraggable setSharedVar={setSharedVar} top={pos.y} left={pos.x} fontSize={fontSize || 20} text={text} className={textClassName} outline={outline} textRef={textRef} />
     </div>
   )
