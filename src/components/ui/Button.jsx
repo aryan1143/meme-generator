@@ -1,13 +1,18 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import useOnHold from '../../hooks/useOnHold';
 
-function Button({ btnText, onClick, isRoundedProp, isDisabledProp, sizeProp, colorProp, isBoldProp }) {
+function Button({ btnText, onClick, isRoundedProp, isDisabledProp, sizeProp, colorProp, isBoldProp, repetetiveHoldAction, className }) {
   const [isRounded, setIsRounded] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isBold, setIsBold] = useState(false);
   const [size, setSize] = useState('medium');
   const [color, setColor] = useState('blue');
 
-  React.useEffect(() => {
+  function handleLongPress() {
+    repetetiveHoldAction();
+  }
+
+  useEffect(() => {
     if (isRoundedProp !== undefined) setIsRounded(isRoundedProp);
     if (isDisabledProp !== undefined) setIsDisabled(isDisabledProp);
     if (isBoldProp !== undefined) setIsBold(isBoldProp);
@@ -25,10 +30,10 @@ function Button({ btnText, onClick, isRoundedProp, isDisabledProp, sizeProp, col
     if (colorProp !== undefined) {
       setColor(`${colorProp} text-white`);
     }
-  }, [isRoundedProp, isDisabledProp, sizeProp, colorProp]);
+  }, [isRoundedProp, isDisabledProp, sizeProp, colorProp, isBoldProp]);
 
   return (
-    <button onClick={onClick} disabled={isDisabled} className={`${isRounded ? 'rounded-md' : ''} ${size} ${color} ${isBold ? 'font-bold' : ''} cursor-pointer`}>{btnText}</button>
+    <button {...useOnHold(handleLongPress)} onClick={onClick} disabled={isDisabled} className={`${isRounded ? 'rounded-md' : ''} ${size} ${color} ${isBold ? 'font-bold' : ''} cursor-pointer w-fit active:scale-99 ${className}`}>{btnText}</button>
   )
 }
 

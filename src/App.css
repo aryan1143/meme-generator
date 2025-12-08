@@ -4,12 +4,32 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
+
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Standard syntax */
 }
+
+.text-stroke-3 {
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+}
+
+.stroked-text {
+  /* Set the stroke: 2px wide, black color */
+  -webkit-text-stroke: 1px black;
+  
+  /* Set the fill color of the text (optional, transparent by default) */
+}
+
 
 @media screen and (min-width: 480px) {
   .main-padding {
-    padding-left: calc(30vw - 200px);
-    padding-right: calc(30vw - 200px);
+    padding-left: calc(25vw - 200px);
+    padding-right: calc(25vw - 200px);
   }
 }
 
