@@ -14,6 +14,29 @@ body {
   user-select: none; /* Standard syntax */
 }
 
+.bg-main {
+  background-color: #222831;
+  color: white;
+  border-color: #627189;
+}
+
+.bg-sub-main {
+  background-color: #393E46;
+  color: white;
+}
+
+.bg-card {
+  background-color: #00ADB5;
+  color: white;
+  outline-color: #006267;
+}
+
+.bg-highlighted-card {
+  background-color: #EEEEEE;
+  color: #222831;
+}
+
+
 .text-stroke-3 {
     text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
 }

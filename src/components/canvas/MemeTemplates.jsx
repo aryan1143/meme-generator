@@ -14,12 +14,13 @@ const memeTemplates = ({setImageSrc}) => {
   // console.log(imagesData);
 
   return (
-    <div className="flex h-[60%] w-[75%] bg-gray-100 rounded-md border border-gray-300  justify-center items-center overflow-hidden">
+    <div className="flex flex-col h-[60%] w-full bg-main rounded-md border justify-center items-center overflow-hidden">
+      <p className='self-start px-2 font-bold'>Templates</p>
       {isLoading && <p>Loading...</p>}
-      <div className='grid h-[55vh] w-[18vw] grid-cols-3 gap-0 overflow-scroll no-scrollbar'>
+      <div className='grid h-[55vh] w-full grid-cols-3 gap-0 overflow-scroll no-scrollbar'>
       {images && images.map((i, key)=> {
         return(
-          <img key={key} src={i.url} onClick={()=> setImageSrc(i.url)} className='h-full  border-2 cursor-pointer' />
+          <img key={key} src={i.url} onClick={()=> setImageSrc(i.url)} className='h-[5vw] border-2 cursor-pointer' />
         )
       })}
         

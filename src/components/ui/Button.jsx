@@ -28,7 +28,7 @@ function Button({ btnText, onClick, isRoundedProp, isDisabledProp, sizeProp, col
     }
 
     if (colorProp !== undefined) {
-      setColor(`${colorProp} text-white`);
+      setColor(`${colorProp}`);
     }
   }, [isRoundedProp, isDisabledProp, sizeProp, colorProp, isBoldProp]);
 
