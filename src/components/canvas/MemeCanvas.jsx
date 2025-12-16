@@ -1,6 +1,7 @@
 import { use, useEffect, useRef, useState } from 'react'
 import TextDraggable from './TextDraggable'
 import useDrag from '../../hooks/useDrag';
+import AICaption from '../../services/AICaption';
 
 function MemeCanvas({ imageSrc, setSharedVar, sharedVars, pos, setPos, selectedText, setSelectedText }) {
   //using custom hook useDrag
@@ -9,8 +10,6 @@ function MemeCanvas({ imageSrc, setSharedVar, sharedVars, pos, setPos, selectedT
   const textMousePosition = useDrag(textRef);
   const canvasMousePosition = useDrag(canvasRef);
   const sharedVar = sharedVars[selectedText];
-
-
 
   useEffect(() => {
     const element = canvasRef.current;
@@ -38,7 +37,7 @@ function MemeCanvas({ imageSrc, setSharedVar, sharedVars, pos, setPos, selectedT
   return (
     <div ref={canvasRef} style={{
       backgroundImage: imageSrc ? `url(${imageSrc})` : 'none',
-    }} className={`relative h-[80vh] w-[80vh] bg-contain   bg-center bg-no-repeat bg-main overflow-hidden rounded-2xl border-2 border-dashed border-gray-400`}>
+    }} className={`relative h-[80vh] w-[80vh] shrink-0 bg-contain bg-center bg-no-repeat bg-main overflow-hidden rounded-2xl border-2 border-dashed border-gray-400 max-md:w-[95vw] max-md:h-[95vw] z-0`}>
       <TextDraggable setSharedVar={setSharedVar} top={pos.text1.y} left={pos.text1.x} fontSize={sharedVars.text1.fontSize || 20} text={sharedVars.text1.text} className={sharedVars.text1.textClassName} outline={sharedVars.text1.outline} textRef={textRef} selectedText={'text1'} setSelectedText={setSelectedText} sharedVar={sharedVar} />
       <TextDraggable setSharedVar={setSharedVar} top={pos.text2.y} left={pos.text2.x} fontSize={sharedVars.text2.fontSize || 20} text={sharedVars.text2.text} className={sharedVars.text2.textClassName} outline={sharedVars.text2.outline} textRef={textRef} selectedText={'text2'} setSelectedText={setSelectedText} sharedVar={sharedVar} />
     </div>

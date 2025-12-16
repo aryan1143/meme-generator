@@ -7,7 +7,7 @@ function TextDraggable({ top, left, fontSize, text, className, outline, setShare
 
     setSharedVar(prev => ({ ...prev, [selectedText]: { ...prev[selectedText], textSize: { width: elementRect.width, height: elementRect.height } } }));
 
-  }, [textRef.current, text, fontSize]);
+  }, [textRef.current, text, fontSize]);    
 
   function handleTextClick () {
     setSelectedText(selectedText);

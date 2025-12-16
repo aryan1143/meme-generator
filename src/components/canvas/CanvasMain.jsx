@@ -38,9 +38,9 @@ function CanvasMain() {
   const [selectedText, setSelectedText] = useState('text1');
 
   return (
-    <div className='flex flex-col w-full h-full bg-sub-main rounded-2xl p-3'>
-      <div className='w-fit h-fit flex gap-6' ref={mainDivRef}>
-        <MemeCanvas setSharedVar={setSharedVar} sharedVars={sharedVar} height={mainDivRef.current?.height} width={mainDivRef.current?.width} imageSrc={imageSrc} pos={pos} setPos={setPos} selectedText={selectedText} setSelectedText={setSelectedText} />
+    <div className='w-fit h-fit flex gap-6 max-md:gap-0 bg-sub-main md:rounded-2xl p-3 max-md:flex-col max-md:w-screen max-md:items-center' ref={mainDivRef}>
+      <MemeCanvas setSharedVar={setSharedVar} sharedVars={sharedVar} height={mainDivRef.current?.height} width={mainDivRef.current?.width} imageSrc={imageSrc} pos={pos} setPos={setPos} selectedText={selectedText} setSelectedText={setSelectedText} />
+      <div className='flex h-fit w-full '>
         <CanvasControl sharedVars={sharedVar} setSharedVar={setSharedVar} setPos={setPos} selectedText={selectedText} setSelectedText={setSelectedText} />
         <MemeImageControl setImageSrc={setImageSrc} />
       </div>

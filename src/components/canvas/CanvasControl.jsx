@@ -3,13 +3,14 @@ import Button from '../ui/Button'
 import { IoCaretDownCircle, IoCaretUpCircle, IoCaretBackCircle, IoCaretForwardCircle } from "react-icons/io5";
 import { LuAlignLeft, LuAlignCenter, LuAlignRight } from "react-icons/lu";
 import useKeyDownEvent from '../../hooks/useKeyDownEvent';
-import AICaption from '../../services/AICaption';
+
 
 
 function CanvasControl({ sharedVars, setSharedVar, setPos, selectedText, setSelectedText }) {
   const sharedVar = sharedVars[selectedText];
-  const { caption, error, isLoading } = AICaption();
-  // !isLoading && console.log(caption);
+
+  
+
 
   const [align, setAlign] = useState();
   const { top, left } = sharedVar;
@@ -103,8 +104,8 @@ function CanvasControl({ sharedVars, setSharedVar, setPos, selectedText, setSele
 
 
   return (
-    <div className='flex flex-col p-2 items-center justify-between py-5'>
-      <div className='flex flex-col gap-2 w-8/10'>
+    <div className='flex flex-col max-md:h-fit max-md:gap-3 max-md:w-75/100 p-2 items-center justify-between py-5'>
+      <div className='flex flex-col gap-2 w-8/10 max-md:w-9/10'>
         <p>Select Text</p>
         <div className='w-full flex justify-between'>
           <div className='h-fit w-5/10'>
@@ -117,18 +118,18 @@ function CanvasControl({ sharedVars, setSharedVar, setPos, selectedText, setSele
           </div>
         </div>
       </div>
-      <div className='flex flex-col'>
+      <div className='flex flex-col max-md:w-9/10'>
         <p>Text</p>
         <input type="text" className='rounded outline outline-gray-500 focus:outline-2 px-1 py-1.5 bg-main' placeholder='Enter Text Here' onChange={(e) => { handleTextInputChange(e); handleAlignChange(align) }} />
       </div>
-      <div className='flex flex-col h-fit w-8/10'>
+      <div className='flex flex-col h-fit w-8/10 max-md:w-9/10'>
         <p>Text Color</p>
-        <div className='flex gap-3 items-center justify-center outline outline-gray-500 focus-within:outline-2 focus-within:outline-black bg-main rounded'>
+        <div className='flex gap-3 items-center px-1 outline outline-gray-500 focus-within:outline-2 focus-within:outline-black bg-main rounded'>
           <input type="color" className='h-10 w-10 border-0 cursor-pointer' onChange={(e) => { handleColorChange(e) }} value={sharedVar.textClassName} />
           <input type="text" className='rounded outline-0 px-1 h-fit py-1 bg-main w-[58%]' placeholder='Enter Text Color Here' value={sharedVar.textClassName || '#'} onChange={(e) => { handleColorChange(e) }} />
         </div>
       </div>
-      <div className='w-8/10 flex flex-col justify-center items-center gap-2 bg-main p-2 rounded-lg outline-1 outline-gray-400'>
+      <div className='w-8/10 max-md:w-9/10 flex flex-col justify-center items-center gap-2 bg-main p-2 rounded-lg outline-1 outline-gray-400'>
         <input
           className='w-full accent-[#00c9d3]'
           type="range"
@@ -139,7 +140,7 @@ function CanvasControl({ sharedVars, setSharedVar, setPos, selectedText, setSele
         />
         <p>Text Size: {sharedVar.fontSize}px</p>
       </div>
-      <div className='flex flex-col w-8/10 h-[5%] my-2 justify-center'>
+      <div className='flex flex-col w-8/10 max-md:w-9/10 h-[5%] my-2 justify-center'>
         <p>Alignment</p>
         <form className='flex justify-between text-2xl' onChange={(e) => { handleAlignChange(e.target.value); setAlign(e.target.value) }}>
           <div className='flex flex-col justify-center items-center w-3/10'>

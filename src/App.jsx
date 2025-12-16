@@ -5,7 +5,7 @@ import NavBar from './components/ui/NavBar'
 function App() {
 
   return (
-    <div className="bg-main min-h-screen">
+    <div className="bg-main min-h-screen no-scrollbar">
       <NavBar />
       <div className='main-padding'>
         <HomePage />
