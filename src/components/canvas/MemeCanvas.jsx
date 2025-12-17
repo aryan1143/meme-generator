@@ -6,8 +6,10 @@ import AICaption from '../../services/AICaption';
 function MemeCanvas({ imageSrc, setSharedVar, sharedVars, pos, setPos, selectedText, setSelectedText }) {
   //using custom hook useDrag
   const canvasRef = useRef(null);
-  const textRef = useRef(null);
-  const textMousePosition = useDrag(textRef);
+  const [textMousePosition, setTextMousePosition] = useState({
+    text1:{x: 0, y: 0},
+    text2:{x: 0, y: 0}
+  })
   const canvasMousePosition = useDrag(canvasRef);
   const sharedVar = sharedVars[selectedText];
 
@@ -17,8 +19,10 @@ function MemeCanvas({ imageSrc, setSharedVar, sharedVars, pos, setPos, selectedT
     setSharedVar(prev => ({ ...prev, [selectedText]: { ...sharedVar, canvasSize: { width: elementRect.width, height: elementRect.height } } }));
   }, [selectedText])
 
+
+
   useEffect(() => {
-    const calCanvasMousePosition = { x: canvasMousePosition.x - textMousePosition.x, y: canvasMousePosition.y - textMousePosition.y };
+    const calCanvasMousePosition = { x: canvasMousePosition.x - textMousePosition[selectedText].x, y: canvasMousePosition.y - textMousePosition[selectedText].y };
     const textSize = sharedVar.textSize;
     const canvasSizeLimit = { width: sharedVar.canvasSize.width - textSize.width, height: sharedVar.canvasSize.height - textSize.height };
     setPos(
@@ -30,16 +34,17 @@ function MemeCanvas({ imageSrc, setSharedVar, sharedVars, pos, setPos, selectedT
         }
       }
     )
+    console.log('canvasp.y: ', canvasMousePosition.y, 'textp: ', textMousePosition[selectedText].y)
   }, [canvasMousePosition, sharedVar.top, sharedVar.left]);
 
-  // console.log(pos.text2)
+  // console.log(sharedVar.top)
 
   return (
     <div ref={canvasRef} style={{
       backgroundImage: imageSrc ? `url(${imageSrc})` : 'none',
-    }} className={`relative h-[80vh] w-[80vh] shrink-0 bg-contain bg-center bg-no-repeat bg-main overflow-hidden rounded-2xl border-2 border-dashed border-gray-400 max-md:w-[95vw] max-md:h-[95vw] z-0`}>
-      <TextDraggable setSharedVar={setSharedVar} top={pos.text1.y} left={pos.text1.x} fontSize={sharedVars.text1.fontSize || 20} text={sharedVars.text1.text} className={sharedVars.text1.textClassName} outline={sharedVars.text1.outline} textRef={textRef} selectedText={'text1'} setSelectedText={setSelectedText} sharedVar={sharedVar} />
-      <TextDraggable setSharedVar={setSharedVar} top={pos.text2.y} left={pos.text2.x} fontSize={sharedVars.text2.fontSize || 20} text={sharedVars.text2.text} className={sharedVars.text2.textClassName} outline={sharedVars.text2.outline} textRef={textRef} selectedText={'text2'} setSelectedText={setSelectedText} sharedVar={sharedVar} />
+    }} className={`touch-none relative h-[80vh] w-[80vh] shrink-0 bg-contain bg-center bg-no-repeat bg-main overflow-hidden rounded-2xl border-2 border-gray-400 max-md:w-[95vw] max-md:h-[95vw]`}>
+      <TextDraggable setSharedVar={setSharedVar} top={pos.text1.y} left={pos.text1.x} fontSize={sharedVars.text1.fontSize || 20} text={sharedVars.text1.text} className={sharedVars.text1.textClassName} outline={sharedVars.text1.outline} selectedText={'text1'} setSelectedText={setSelectedText} sharedVar={sharedVar} setTextMousePosition={setTextMousePosition}/>
+      <TextDraggable setSharedVar={setSharedVar} top={pos.text2.y} left={pos.text2.x} fontSize={sharedVars.text2.fontSize || 20} text={sharedVars.text2.text} className={sharedVars.text2.textClassName} outline={sharedVars.text2.outline} selectedText={'text2'} setSelectedText={setSelectedText} sharedVar={sharedVar} setTextMousePosition={setTextMousePosition}/>
     </div>
   )
 }

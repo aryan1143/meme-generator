@@ -1,6 +1,6 @@
 //it will return the current position of the mouse relative to the referenced element while dragging
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect,useState } from "react";
 
 export default function useDrag(ref) {
     const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -14,17 +14,18 @@ export default function useDrag(ref) {
             setPosition({ x, y });
         }
         const element = ref.current;
-        ref.current.addEventListener('mousedown', () => {
+        ref.current.addEventListener('pointerdown', () => {
+            
             if (element) {
-                element.addEventListener('mousemove', handleMouseMove);
+                element.addEventListener('pointermove', handleMouseMove);
             }
             return () => {
-                element.removeEventListener('mousemove', handleMouseMove);
+                element.removeEventListener('pointeremove', handleMouseMove);
             }
         });
 
-        ref.current.addEventListener('mouseup', () => {
-            ref.current.removeEventListener('mousemove', handleMouseMove);
+        ref.current.addEventListener('pointerup', () => {
+            ref.current.removeEventListener('pointermove', handleMouseMove);
         });
 
     }, [ref.current])

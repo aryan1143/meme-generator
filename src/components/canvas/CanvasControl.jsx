@@ -89,6 +89,8 @@ function CanvasControl({ sharedVars, setSharedVar, setPos, selectedText, setSele
     }
   }
 
+
+
   function handleMemeGenerate() {
 
   }
