@@ -9,7 +9,7 @@ import useKeyDownEvent from '../../hooks/useKeyDownEvent';
 function CanvasControl({ sharedVars, setSharedVar, setPos, selectedText, setSelectedText }) {
   const sharedVar = sharedVars[selectedText];
 
-  
+
 
 
   const [align, setAlign] = useState();
@@ -71,6 +71,14 @@ function CanvasControl({ sharedVars, setSharedVar, setPos, selectedText, setSele
     setSharedVar(prev => ({ ...prev, [selectedText]: { ...sharedVar, outline: !sharedVar.outline } }));
   }
 
+  function handleBoldToggle() {
+    setSharedVar(prev => ({ ...prev, [selectedText]: { ...sharedVar, bold: !sharedVar.bold } }));
+  }
+
+  function handleItalicToggle() {
+    setSharedVar(prev => ({ ...prev, [selectedText]: { ...sharedVar, italic: !sharedVar.italic } }));
+  }
+
   function handleAlignChange(value) {
     const textSize = sharedVar.textSize || { width: 0, height: 0 };
     const canvasSize = sharedVar.canvasSize || { width: 0, height: 0 };
@@ -124,6 +132,32 @@ function CanvasControl({ sharedVars, setSharedVar, setPos, selectedText, setSele
         <p>Text</p>
         <input type="text" className='rounded outline outline-gray-500 focus:outline-2 px-1 py-1.5 bg-main' placeholder='Enter Text Here' onChange={(e) => { handleTextInputChange(e); handleAlignChange(align) }} />
       </div>
+      <div className="w-9/10 flex md:grid md:grid-cols-2 md:gap-3 justify-between">
+        <Button
+          btnText={"Outline:" + (sharedVar.outline ? " On" : " Off")}
+          isRoundedProp={true}
+          colorProp={sharedVar.outline ? 'bg-gray-500' : 'bg-gray-400'}
+          sizeProp={'small'}
+          isBoldProp={true}
+          onClick={handleOutlineToggle}
+        />
+        <Button
+          btnText={"Bold:" + (sharedVar.bold ? " On" : " Off")}
+          isRoundedProp={true}
+          colorProp={sharedVar.bold ? 'bg-gray-500' : 'bg-gray-400'}
+          sizeProp={'small'}
+          isBoldProp={true}
+          onClick={handleBoldToggle}
+        />
+        <Button
+          btnText={"Italic:" + (sharedVar.italic ? " On" : " Off")}
+          isRoundedProp={true}
+          colorProp={sharedVar.italic ? 'bg-gray-500' : 'bg-gray-400'}
+          sizeProp={'small'}
+          isBoldProp={true}
+          onClick={handleItalicToggle}
+        />
+      </div>
       <div className='flex flex-col h-fit w-8/10 max-md:w-9/10'>
         <p>Text Color</p>
         <div className='flex gap-3 items-center px-1 outline outline-gray-500 focus-within:outline-2 focus-within:outline-black bg-main rounded'>
@@ -159,7 +193,7 @@ function CanvasControl({ sharedVars, setSharedVar, setPos, selectedText, setSele
           </div>
         </form>
       </div>
-      <div className='flex gap-2'>
+      {/* <div className='flex gap-2'>
         <Button
           btnText={<IoCaretBackCircle className='text-xl' />}
           isRoundedProp={true}
@@ -196,15 +230,7 @@ function CanvasControl({ sharedVars, setSharedVar, setPos, selectedText, setSele
           onClick={handleRightClick}
           repetetiveHoldAction={handleRightHold}
         />
-      </div>
-      <Button
-        btnText={"Outline:" + (sharedVar.outline ? " On" : " Off")}
-        isRoundedProp={true}
-        colorProp={sharedVar.outline ? 'bg-gray-500' : 'bg-gray-400'}
-        sizeProp={'small'}
-        isBoldProp={true}
-        onClick={handleOutlineToggle}
-      />
+      </div> */}
       <Button
         btnText={"Generate Meme"}
         isRoundedProp={true}

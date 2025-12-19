@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import useDrag from "../../hooks/useDrag";
 
-function TextDraggable({ top, left, fontSize, text, className, outline, setSharedVar, selectedText, sharedVar, setSelectedText, setTextMousePosition }) {
+function TextDraggable({ top, left, fontSize, text, className, outline, bold, italic, setSharedVar, selectedText, sharedVar, isSelected, setSelectedText, setTextMousePosition }) {
   const textRef = useRef(null);
   const textMousePosition = useDrag(textRef);
   const [textStatus, setTextStatus] = useState(true)
@@ -12,17 +12,6 @@ function TextDraggable({ top, left, fontSize, text, className, outline, setShare
     setSharedVar(prev => ({ ...prev, [selectedText]: { ...prev[selectedText], textSize: { width: elementRect.width, height: elementRect.height } } }));
 
   }, [textRef.current, text, fontSize]);
-
-  // useEffect(() => {
-  //   setTextMousePosition(prev => ({
-  //     ...prev, [selectedText]: {
-  //       x: textMousePosition.x < 0 ? 0 : textMousePosition.y,
-  //       y: textMousePosition.y < 0 ? 0 : textMousePosition.y
-  //     }
-  //   }));
-  //   console.log(textStatus)
-  // }, [textMousePosition]);
-
 
   function handlePointerDown(e) {
     const element = textRef.current;
@@ -44,7 +33,7 @@ function TextDraggable({ top, left, fontSize, text, className, outline, setShare
   }
 
   return (
-    <p onClick={handleTextClick} ref={textRef} onPointerDown={handlePointerDown} className={`absolute whitespace-nowrap cursor-move font-bold select-none ${outline ? 'stroked-text' : ''} ${className}`} style={{ top: (selectedText === 'text2' ? (top || (sharedVar.canvasSize.height - sharedVar.textSize.height)) : top), left: left, fontSize: fontSize, color: className || 'white' }}>{text || selectedText.toUpperCase() + ' HERE'}</p>
+    <p onClick={handleTextClick} ref={textRef} onPointerDown={handlePointerDown} className={`absolute whitespace-nowrap cursor-move ${bold ? 'font-bold' : ''} ${italic ? 'italic' : ''} select-none m-1 p-1 ${outline ? 'stroked-text' : ''} ${isSelected ? 'outline-2 outline-dashed outline-[#00777e] outline-offset-1' : ''} ${className}`} style={{ top: (selectedText === 'text2' ? (top || (sharedVar.canvasSize.height - sharedVar.textSize.height)) : top), left: left, fontSize: fontSize, color: className || 'white' }}>{text || selectedText.toUpperCase() + ' HERE'}</p>
   )
 }
 
