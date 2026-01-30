@@ -20,6 +20,8 @@ function CanvasMain() {
         text: '',
         textClassName: '#ffffff',
         outline: true,
+        bold: false,
+        italic: false,
         textSize: { width: 0, height: 0 },
         canvasSize: { width: 0, height: 0 },
       },
@@ -30,6 +32,8 @@ function CanvasMain() {
         text: '',
         textClassName: '#ffffff',
         outline: true,
+        bold: false,
+        italic: false,
         textSize: { width: 0, height: 0 },
         canvasSize: { width: 0, height: 0 },
       }
