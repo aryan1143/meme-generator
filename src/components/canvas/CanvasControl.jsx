@@ -1,17 +1,19 @@
 import { useEffect, useLayoutEffect, useState } from 'react';
 import Button from '../ui/Button'
 import { IoCaretDownCircle, IoCaretUpCircle, IoCaretBackCircle, IoCaretForwardCircle } from "react-icons/io5";
-import { LuAlignLeft, LuAlignCenter, LuAlignRight } from "react-icons/lu";
+import { LuAlignLeft, LuAlignCenter, LuAlignRight, LuSettings } from "react-icons/lu";
 import useKeyDownEvent from '../../hooks/useKeyDownEvent';
+import TextControlPopUp from '../ui/TextControlPopUp';
 
 
 
 function CanvasControl({ sharedVars, setSharedVar, setPos, selectedText, setSelectedText }) {
   const sharedVar = sharedVars[selectedText];
-
-  
-
-
+  const [textSettingShow, setTextSettingShow] = useState(
+    {
+      text1: false,
+      text2: false
+    })
   const [align, setAlign] = useState();
   const { top, left } = sharedVar;
   // Handlers for single click action
@@ -110,19 +112,27 @@ function CanvasControl({ sharedVars, setSharedVar, setPos, selectedText, setSele
       <div className='flex flex-col gap-2 w-8/10 max-md:w-9/10'>
         <p>Select Text</p>
         <div className='w-full flex justify-between'>
-          <div className='h-fit w-5/10'>
+          <div className='flex justify-between items-center h-fit w-48/100 bg-gray-600 rounded-r-sm relative'>
             <input onChange={handleSelectedText} type="radio" className='hidden peer' id='text1' name='text' checked={selectedText === 'text1'} value='text1' />
-            <label htmlFor="text1" className='cursor-pointer text-black peer-checked:bg-[#00ADB5] peer-checked:text-white  peer-checked:outline-2 peer-checked:outline-[#00777e] bg-gray-200 py-2 px-5 rounded outline font-bold'>Text 1</label>
+            <label htmlFor="text1" className='cursor-pointer text-black peer-checked:bg-[#00ADB5] peer-checked:text-white  peer-checked:outline-2 peer-checked:outline-[#00777e] bg-gray-200 py-2 px-3 rounded outline text-md font-bold'>Text 1</label>
+            <div className=''>
+              <LuSettings className='mr-2 cursor-pointer' onClick={() => { setTextSettingShow(prev => ({ text2: false, text1: !prev.text1 })) }} />
+              <TextControlPopUp show={textSettingShow.text1} />
+            </div>
           </div>
-          <div className='h-fit'>
+          <div className='flex justify-between items-center h-fit w-48/100 bg-gray-600 rounded-r-sm relative'>
             <input onChange={handleSelectedText} type="radio" className='hidden peer' id='text2' name='text' checked={selectedText == 'text2'} value='text2' />
-            <label htmlFor="text2" className='cursor-pointer text-black peer-checked:outline-2 bg-gray-200 py-2 px-5 rounded outline font-bold peer-checked:bg-[#00ADB5] peer-checked:text-white peer-checked:outline-[#00777e]'>Text 2</label>
+            <label htmlFor="text2" className='cursor-pointer text-black peer-checked:outline-2 bg-gray-200 py-2 px-3 rounded outline font-bold peer-checked:bg-[#00ADB5] peer-checked:text-white peer-checked:outline-[#00777e] text-md'>Text 2</label>
+            <div className="">
+              <LuSettings className='mr-2 cursor-pointer' onClick={() => { setTextSettingShow(prev => ({ text1: false, text2: !prev.text2 })) }} />
+              <TextControlPopUp show={textSettingShow.text2} />
+            </div>
           </div>
         </div>
       </div>
       <div className='flex flex-col max-md:w-9/10'>
         <p>Text</p>
-        <input type="text" className='rounded outline outline-gray-500 focus:outline-2 px-1 py-1.5 bg-main' placeholder='Enter Text Here' onChange={(e) => { handleTextInputChange(e); handleAlignChange(align) }} />
+        <input type="text" className='rounded outline outline-gray-500 focus:outline-2 px-1 py-1.5 bg-main' placeholder='Enter Text Here' value={sharedVar.text} onChange={(e) => { handleTextInputChange(e); handleAlignChange(align) }} />
       </div>
       <div className='flex flex-col h-fit w-8/10 max-md:w-9/10'>
         <p>Text Color</p>
@@ -159,52 +169,14 @@ function CanvasControl({ sharedVars, setSharedVar, setPos, selectedText, setSele
           </div>
         </form>
       </div>
-      <div className='flex gap-2'>
-        <Button
-          btnText={<IoCaretBackCircle className='text-xl' />}
-          isRoundedProp={true}
-          colorProp={'bg-gray-400'}
-          sizeProp={'small'}
-          onClick={handleLeftClick}
-          repetetiveHoldAction={handleLeftHold}
-        />
-        <div className='flex flex-col gap-1'>
-          <Button
-            btnText={<IoCaretUpCircle className='text-xl' />}
-            isRoundedProp={true}
-            colorProp={'bg-gray-400'}
-            sizeProp={'small'}
-            onClick={handleUpClick}
-            repetetiveHoldAction={handleUpHold}
-            className="px-4 py-1"
-          />
-          <Button
-            btnText={<IoCaretDownCircle className='text-xl' />}
-            isRoundedProp={true}
-            colorProp={'bg-gray-400'}
-            sizeProp={'small'}
-            onClick={handleDownClick}
-            repetetiveHoldAction={handleDownHold}
-            className={"px-4 py-1"}
-          />
-        </div>
-        <Button
-          btnText={<IoCaretForwardCircle className='text-xl' />}
-          isRoundedProp={true}
-          colorProp={'bg-gray-400'}
-          sizeProp={'small'}
-          onClick={handleRightClick}
-          repetetiveHoldAction={handleRightHold}
-        />
-      </div>
-      <Button
+      {/* <Button
         btnText={"Outline:" + (sharedVar.outline ? " On" : " Off")}
         isRoundedProp={true}
         colorProp={sharedVar.outline ? 'bg-gray-500' : 'bg-gray-400'}
         sizeProp={'small'}
         isBoldProp={true}
         onClick={handleOutlineToggle}
-      />
+      /> */}
       <Button
         btnText={"Generate Meme"}
         isRoundedProp={true}
