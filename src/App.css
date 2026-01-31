@@ -50,9 +50,14 @@ body {
 
 .stroked-text {
   /* Set the stroke: 2px wide, black color */
-  -webkit-text-stroke: 1px black;
+  --outline-color: black;
+  -webkit-text-stroke: 1px var(--outline-color);
 
   /* Set the fill color of the text (optional, transparent by default) */
+}
+
+.export-mode .texts {
+  transform: translateY(-15px);
 }
 
 *::-webkit-scrollbar {

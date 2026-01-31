@@ -1,18 +1,15 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Button from '../ui/Button'
 import { IoCaretDownCircle, IoCaretUpCircle, IoCaretBackCircle, IoCaretForwardCircle } from "react-icons/io5";
 import { LuAlignLeft, LuAlignCenter, LuAlignRight, LuSettings } from "react-icons/lu";
 import useKeyDownEvent from '../../hooks/useKeyDownEvent';
 import TextControlPopUp from '../ui/TextControlPopUp';
+import html2canvas from "html2canvas";
 
 
 
-function CanvasControl({ sharedVars, setSharedVar, setPos, selectedText, setSelectedText }) {
+function CanvasControl({ canvasRef, sharedVars, setSharedVar, setPos, selectedText, setSelectedText, textSettingShow, setTextSettingShow, textControlPopUpRef }) {
   const sharedVar = sharedVars[selectedText];
-
-  
-
-
   const [align, setAlign] = useState();
   const { top, left } = sharedVar;
   // Handlers for single click action
@@ -27,26 +24,6 @@ function CanvasControl({ sharedVars, setSharedVar, setPos, selectedText, setSele
   }
   function handleRightClick() {
     setSharedVar(prev => ({ ...prev, [selectedText]: { ...sharedVar, left: left + 5 } }));
-  }
-
-  // For repetetive hold action
-  let i = top;
-  function handleDownHold() {
-    i = i + 2;
-    setSharedVar(prev => ({ ...prev, [selectedText]: { ...sharedVar, top: i } }));
-  }
-  function handleUpHold() {
-    i = i - 2;
-    setSharedVar(prev => ({ ...prev, [selectedText]: { ...sharedVar, top: i } }));
-  }
-  let j = left;
-  function handleLeftHold() {
-    j = j - 2;
-    setSharedVar(prev => ({ ...prev, [selectedText]: { ...sharedVar, left: j } }));
-  }
-  function handleRightHold() {
-    j = j + 2;
-    setSharedVar(prev => ({ ...prev, [selectedText]: { ...sharedVar, left: j } }));
   }
 
   //arrow key functions
@@ -66,18 +43,6 @@ function CanvasControl({ sharedVars, setSharedVar, setPos, selectedText, setSele
 
   function handleColorChange(event) {
     setSharedVar(prev => ({ ...prev, [selectedText]: { ...sharedVar, textClassName: event.target.value[0] == '#' ? event.target.value : '#' + event.target.value } }));
-  }
-
-  function handleOutlineToggle() {
-    setSharedVar(prev => ({ ...prev, [selectedText]: { ...sharedVar, outline: !sharedVar.outline } }));
-  }
-
-  function handleBoldToggle() {
-    setSharedVar(prev => ({ ...prev, [selectedText]: { ...sharedVar, bold: !sharedVar.bold } }));
-  }
-
-  function handleItalicToggle() {
-    setSharedVar(prev => ({ ...prev, [selectedText]: { ...sharedVar, italic: !sharedVar.italic } }));
   }
 
   function handleAlignChange(value) {
@@ -100,39 +65,52 @@ function CanvasControl({ sharedVars, setSharedVar, setPos, selectedText, setSele
 
 
 
-  function handleMemeGenerate() {
+  const handleMemeGenerate = async () => {
+    await document.fonts.ready;
+    const element = canvasRef.current;
+    element.classList.add("export-mode");
+    element.classList.remove("rounded-md", "border-2");
 
-  }
+    const canvas = await html2canvas(element, {
+      scale: 2,
+      useCORS: true,
+      letterRendering: true
+    });
+
+    
+    const link = document.createElement("a");
+    link.download = "meme.jpg";
+    link.href = canvas.toDataURL("image/jpeg", 1.0);
+    link.click();
+    element.classList.remove("export-mode");
+    element.classList.add("border-2", "rounded-md");
+  };
 
   function handleSelectedText(e) {
     setSelectedText(e.target.value);
   }
 
-  // useEffect(() => {
-  //   handleAlignChange(align)
-  // }, [sharedVar.text]);
-
 
 
   return (
-    <div className='flex flex-col max-md:h-fit max-md:gap-3 max-md:w-75/100 p-2 items-center justify-between py-5'>
+    <div id='canvasControl' className='flex flex-col max-md:h-fit max-md:gap-3 max-md:w-75/100 p-2 items-center justify-between py-5' >
       <div className='flex flex-col gap-2 w-8/10 max-md:w-9/10'>
         <p>Select Text</p>
         <div className='w-full flex justify-between'>
           <div className='flex justify-between items-center h-fit w-48/100 bg-gray-600 rounded-r-sm relative'>
             <input onChange={handleSelectedText} type="radio" className='hidden peer' id='text1' name='text' checked={selectedText === 'text1'} value='text1' />
             <label htmlFor="text1" className='cursor-pointer text-black peer-checked:bg-[#00ADB5] peer-checked:text-white  peer-checked:outline-2 peer-checked:outline-[#00777e] bg-gray-200 py-2 px-3 rounded outline text-md font-bold'>Text 1</label>
-            <div className=''>
-              <LuSettings className='mr-2 cursor-pointer' onClick={() => { setTextSettingShow(prev => ({ text2: false, text1: !prev.text1 })) }} />
-              <TextControlPopUp show={textSettingShow.text1} />
+            <div className='textControl'>
+              <LuSettings size={20} className='textControl mr-2 cursor-pointer' onClick={() => { setTextSettingShow(prev => ({ text2: false, text1: !prev.text1 })) }} />
+              <TextControlPopUp reference={textControlPopUpRef} show={textSettingShow.text1} sharedVar={sharedVars.text1} setSharedVar={setSharedVar} selectedText={'text1'} />
             </div>
           </div>
           <div className='flex justify-between items-center h-fit w-48/100 bg-gray-600 rounded-r-sm relative'>
             <input onChange={handleSelectedText} type="radio" className='hidden peer' id='text2' name='text' checked={selectedText == 'text2'} value='text2' />
             <label htmlFor="text2" className='cursor-pointer text-black peer-checked:outline-2 bg-gray-200 py-2 px-3 rounded outline font-bold peer-checked:bg-[#00ADB5] peer-checked:text-white peer-checked:outline-[#00777e] text-md'>Text 2</label>
-            <div className="">
-              <LuSettings className='mr-2 cursor-pointer' onClick={() => { setTextSettingShow(prev => ({ text1: false, text2: !prev.text2 })) }} />
-              <TextControlPopUp show={textSettingShow.text2} />
+            <div className='textControl' >
+              <LuSettings size={20} className='textControl mr-2 cursor-pointer' onClick={() => { setTextSettingShow(prev => ({ text1: false, text2: !prev.text2 })) }} />
+              <TextControlPopUp reference={textControlPopUpRef} show={textSettingShow.text2} sharedVar={sharedVars.text2} setSharedVar={setSharedVar} selectedText={'text2'} />
             </div>
           </div>
         </div>
@@ -140,32 +118,6 @@ function CanvasControl({ sharedVars, setSharedVar, setPos, selectedText, setSele
       <div className='flex flex-col max-md:w-9/10'>
         <p>Text</p>
         <input type="text" className='rounded outline outline-gray-500 focus:outline-2 px-1 py-1.5 bg-main' placeholder='Enter Text Here' value={sharedVar.text} onChange={(e) => { handleTextInputChange(e); handleAlignChange(align) }} />
-      </div>
-      <div className="w-9/10 flex md:grid md:grid-cols-2 md:gap-3 justify-between">
-        <Button
-          btnText={"Outline:" + (sharedVar.outline ? " On" : " Off")}
-          isRoundedProp={true}
-          colorProp={sharedVar.outline ? 'bg-gray-500' : 'bg-gray-400'}
-          sizeProp={'small'}
-          isBoldProp={true}
-          onClick={handleOutlineToggle}
-        />
-        <Button
-          btnText={"Bold:" + (sharedVar.bold ? " On" : " Off")}
-          isRoundedProp={true}
-          colorProp={sharedVar.bold ? 'bg-gray-500' : 'bg-gray-400'}
-          sizeProp={'small'}
-          isBoldProp={true}
-          onClick={handleBoldToggle}
-        />
-        <Button
-          btnText={"Italic:" + (sharedVar.italic ? " On" : " Off")}
-          isRoundedProp={true}
-          colorProp={sharedVar.italic ? 'bg-gray-500' : 'bg-gray-400'}
-          sizeProp={'small'}
-          isBoldProp={true}
-          onClick={handleItalicToggle}
-        />
       </div>
       <div className='flex flex-col h-fit w-8/10 max-md:w-9/10'>
         <p>Text Color</p>
@@ -202,52 +154,6 @@ function CanvasControl({ sharedVars, setSharedVar, setPos, selectedText, setSele
           </div>
         </form>
       </div>
-      <div className='flex gap-2'>
-        <Button
-          btnText={<IoCaretBackCircle className='text-xl' />}
-          isRoundedProp={true}
-          colorProp={'bg-gray-400'}
-          sizeProp={'small'}
-          onClick={handleLeftClick}
-          repetetiveHoldAction={handleLeftHold}
-        />
-        <div className='flex flex-col gap-1'>
-          <Button
-            btnText={<IoCaretUpCircle className='text-xl' />}
-            isRoundedProp={true}
-            colorProp={'bg-gray-400'}
-            sizeProp={'small'}
-            onClick={handleUpClick}
-            repetetiveHoldAction={handleUpHold}
-            className="px-4 py-1"
-          />
-          <Button
-            btnText={<IoCaretDownCircle className='text-xl' />}
-            isRoundedProp={true}
-            colorProp={'bg-gray-400'}
-            sizeProp={'small'}
-            onClick={handleDownClick}
-            repetetiveHoldAction={handleDownHold}
-            className={"px-4 py-1"}
-          />
-        </div>
-        <Button
-          btnText={<IoCaretForwardCircle className='text-xl' />}
-          isRoundedProp={true}
-          colorProp={'bg-gray-400'}
-          sizeProp={'small'}
-          onClick={handleRightClick}
-          repetetiveHoldAction={handleRightHold}
-        />
-      </div>
-      <Button
-        btnText={"Outline:" + (sharedVar.outline ? " On" : " Off")}
-        isRoundedProp={true}
-        colorProp={sharedVar.outline ? 'bg-gray-500' : 'bg-gray-400'}
-        sizeProp={'small'}
-        isBoldProp={true}
-        onClick={handleOutlineToggle}
-      />
       <Button
         btnText={"Generate Meme"}
         isRoundedProp={true}
