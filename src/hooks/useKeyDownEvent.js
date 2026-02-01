@@ -4,6 +4,7 @@ export default function useKeyDownEvent(key, callback) {
     useEffect(() => {
         function handleKeyDown(event) {
             if (event.key === key) {
+                event.preventDefault();
                 callback();
             }
 

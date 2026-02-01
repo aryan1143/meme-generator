@@ -3,11 +3,10 @@ import MemeCanvas from './MemeCanvas'
 import CanvasControl from './CanvasControl';
 import MemeImageControl from './MemeImageControl';
 
-function CanvasMain() {
-  const [imageSrc, setImageSrc] = useState(null);
+function CanvasMain({canvasRef, imageSrc, setImageSrc}) {
+
   const mainDivRef = useRef();
   const textControlPopUpRef = useRef(null);
-  const canvasRef = useRef(null);
   const [textSettingShow, setTextSettingShow] = useState({
     text1: false,
     text2: false
