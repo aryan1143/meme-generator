@@ -76,7 +76,7 @@ const TextControlPopUp = ({ show, sharedVar, setSharedVar, selectedText, referen
 
 
     return (
-        <div ref={reference} className={`${show ? 'absolute' : 'hidden'} p-3 top-12 left-0 bg-gray-600 w-50 h-50 rounded-2xl`}>
+        <div ref={reference} className={`${show ? 'absolute' : 'hidden'} p-3 top-12 left-0 bg-gray-600 w-50 h-fit pb-5 rounded-2xl`}>
             <div className="w-full flex flex-col justify-between gap-3">
                 <div className='flex justify-between'>
                     <Button
